@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Extdn_ExtensionDashboard::list"
+             parent="Magento_Integration::system_extensions"
+             resource="Extdn_ExtensionDashboard::list"
+             module="Extdn_ExtensionDashboard"
+             title="Extension Dashboard"
+             sortOrder="10"
+             action="extdndashboard/extensionlist"/>
+    </menu>
+</config>
