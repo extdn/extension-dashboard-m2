@@ -1,5 +1,5 @@
 # Extension Dashboard
-Adds a dashboard to review all installed extensions in the Magento admin.
+Adds a dashboard to review all installed extensions in the Magento admin (Magento 2.3.0+ for now only)
 ![Screenshot Dashboard](docs/extension_dashboard.png?raw=true")
 
 ![Screenshot Admin > System > Extension Dashboard](docs/admin_menu_entry.png?raw=true)
