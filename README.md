@@ -9,7 +9,7 @@ Adds a dashboard to review all installed extensions in the Magento admin.
 ```
 bin/magento deploy:mode:set developer (if in production mode)
 composer config repositories.extdndash git https://github.com/extdn/extension-dashboard-m2.git
-composer require extdn/extension-dashboard-m2
+composer require extdn/extension-dashboard-m2:dev-master
 bin/magento module:enable Extdn_ExtensionDashboard
 bin/magento setup:upgrade  
 your usual sequence of commands to enable production mode if you started out in production mode
