@@ -2,6 +2,7 @@
 
 namespace Extdn\ExtensionDashboard\Model\Grid;
 
+use Extdn\ExtensionDashboard\Model\ExtensionReleaseDb;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Data\Collection as FrameworkDataCollection;
@@ -15,19 +16,24 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
     private $moduleListActive;
     private $extensionDocumentFactory;
     private $packageInfo;
+    private $extensionReleaseDb;
+
+    private $extensions;
 
     public function __construct(
         EntityFactoryInterface $entityFactory,
         \Magento\Framework\Module\FullModuleList $moduleList,
         \Magento\Framework\Module\ModuleList $moduleListActive,
         \Extdn\ExtensionDashboard\Model\ExtensionDocumentFactory $extensionDocumentFactory,
-        \Magento\Framework\Module\PackageInfo $packageInfo
+        \Magento\Framework\Module\PackageInfo $packageInfo,
+        ExtensionReleaseDb $extensionReleaseDb
     ) {
         parent::__construct($entityFactory);
         $this->moduleList = $moduleList;
         $this->moduleListActive = $moduleListActive;
         $this->extensionDocumentFactory = $extensionDocumentFactory;
         $this->packageInfo = $packageInfo;
+        $this->extensionReleaseDb = $extensionReleaseDb;
     }
 
     /**
@@ -35,25 +41,32 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
      */
     public function getItems()
     {
-        $result = [];
-        $allModules = $this->moduleList->getAll();
-        foreach ($allModules as $module) {
-            if (!$this->isMagentoModule($module['name'])) {
-                $packageName = $this->packageInfo->getPackageName($module['name']);
-                $version = $this->packageInfo->getVersion($module['name']);
-                $active = $this->moduleListActive->has($module['name']);
-                $doc = $this->extensionDocumentFactory->create();
-                $doc->setCustomAttribute('module_name', $module['name']);
-                $doc->setCustomAttribute('setup_version', $module['setup_version']);
-                $doc->setCustomAttribute('package_name', $packageName);
-                $doc->setCustomAttribute('version', $version);
-                $doc->setCustomAttribute('active', $active ? __('Enabled') : __('Disabled'));
+        if (empty($this->extensions)) {
+            $allModules = $this->moduleList->getAll();
+            foreach ($allModules as $module) {
+                if (!$this->isMagentoModule($module['name'])) {
+                    $packageName = $this->packageInfo->getPackageName($module['name']);
+                    $version = $this->packageInfo->getVersion($module['name']);
+                    $active = $this->moduleListActive->has($module['name']);
+                    $doc = $this->extensionDocumentFactory->create();
+                    $doc->setCustomAttribute('module_name', $module['name']);
+                    $doc->setCustomAttribute('setup_version', $module['setup_version']);
+                    $doc->setCustomAttribute('package_name', $packageName);
+                    $doc->setCustomAttribute('version', $version);
+                    $doc->setCustomAttribute('latest_version', $this->getLatestVersion($module['name']));
+                    $doc->setCustomAttribute('active', $active ? __('Enabled') : __('Disabled'));
 
-                $result[] = $doc;
+                    $this->extensions[] = $doc;
+                }
             }
         }
 
-        return $result;
+        return $this->extensions;
+    }
+
+    private function getLatestVersion($moduleName)
+    {
+        return $this->extensionReleaseDb->getLatestReleaseForModule($moduleName);
     }
 
     private function isMagentoModule($moduleName)
@@ -68,7 +81,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
      */
     public function getTotalCount()
     {
-        // TODO: Implement getTotalCount() method.
+        return count($this->extensions);
     }
 
     /**
@@ -80,7 +93,8 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
      */
     public function setItems(?array $items = null)
     {
-        // TODO: Implement setItems() method.
+        $this->extensions = $items;
+        return $this;
     }
 
     /**
@@ -103,6 +117,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
     public function setSearchCriteria(SearchCriteriaInterface $searchCriteria)
     {
         // TODO: Implement setSearchCriteria() method.
+        return $this;
     }
 
     /**
@@ -115,6 +130,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
     public function setTotalCount($totalCount)
     {
         // TODO: Implement setTotalCount() method.
+        return $this;
     }
 
     /**
@@ -133,5 +149,6 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
     public function setAggregations($aggregations)
     {
         // TODO: Implement setAggregations() method.
+        return $this;
     }
 }

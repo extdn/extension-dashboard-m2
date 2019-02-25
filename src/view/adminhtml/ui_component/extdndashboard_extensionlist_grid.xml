@@ -59,6 +59,14 @@
                 </item>
             </argument>
         </column>
+        <column name="latest_version">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Latest Version</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
 
     </columns>
 </listing>
