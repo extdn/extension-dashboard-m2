@@ -75,6 +75,7 @@
                 </item>
             </argument>
         </column>
+        <!-- TODO: we could add another column here to display missing entries from the changelogs -->
     </columns>
 </listing>
 

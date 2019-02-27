@@ -57,7 +57,7 @@ class ExtensionReleaseDb extends FrameworkDataCollection
     public function getIsSecure($name, $installedVersion)
     {
         $found = false;
-        $missing=[];
+        $missing = [];
         foreach ($this->getItems() as $item) {
             if ($item->getData('Extension') === $name) {
                 $found = true;
@@ -70,6 +70,7 @@ class ExtensionReleaseDb extends FrameworkDataCollection
         if (!$found) {
             return __('No release data found in DB');
         }
+        //TODO: Make the display a bit nicer, warn with colour
         if (empty($missing)) {
             return __('All applied');
         }
