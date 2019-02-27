@@ -39,11 +39,11 @@ class ExtensionReleaseDb extends FrameworkDataCollection
     {
         $latest = false;
         foreach ($this->getItems() as $item) {
-            if ($item->getData('Extension') === $name) {
+            if ($item->getExtension() === $name) {
                 if (!$latest) {
-                    $latest = $item->getData('Version');
-                } elseif (version_compare($item->getData('Version'), $latest, '>')) {
-                    $latest = $item->getData('Version');
+                    $latest = $item->getVersion();
+                } elseif (version_compare($item->getVersion(), $latest, '>')) {
+                    $latest = $item->getVersion();
                 }
             }
         }
@@ -59,11 +59,11 @@ class ExtensionReleaseDb extends FrameworkDataCollection
         $found = false;
         $missing = [];
         foreach ($this->getItems() as $item) {
-            if ($item->getData('Extension') === $name) {
+            if ($item->getExtension() === $name) {
                 $found = true;
-                if (version_compare($item->getData('Version'), $installedVersion, '>')
-                    && $item->getData('Security') == 1) {
-                    $missing[] = $item->getData('Version');
+                if (version_compare($item->getVersion(), $installedVersion, '>')
+                    && $item->getSecurity() == 1) {
+                    $missing[] = $item->getVersion();
                 }
             }
         }

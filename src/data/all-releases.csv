@@ -1,4 +1,4 @@
-Extension,Version,Date,Security,Content
+extension,version,date,security,content
 Fooman_PdfCore,14.0.0,2019-01-25,0,"ADDED:\nAbility to use currency formatting with Custom Product Attribute ColumnsConstructor Change in Fooman\PdfCore\Block\Pdf\Column\Renderer\ProductAttribute\nFIXED:\nRow Total Column should match Magento when using discounts\nCHANGED:\nRemoved ability to select Tier Price columns"
 Fooman_PdfCore,13.1.0,2019-01-24,0,"ADDED:\nOriginal Price column\nCHANGED:\nAllow SKU product attribute to be displayed as it can be different to the ordered SKU"
 Fooman_PdfCore,13.0.3,2018-12-13,0,"FIXED:\nEnsure Pdf responses are not cached"
