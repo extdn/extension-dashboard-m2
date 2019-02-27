@@ -54,6 +54,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
                     $doc->setCustomAttribute('package_name', $packageName);
                     $doc->setCustomAttribute('version', $version);
                     $doc->setCustomAttribute('latest_version', $this->getLatestVersion($module['name']));
+                    $doc->setCustomAttribute('is_secure', $this->getIsSecure($module['name'], $version));
                     $doc->setCustomAttribute('active', $active ? __('Enabled') : __('Disabled'));
 
                     $this->extensions[] = $doc;
@@ -67,6 +68,11 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
     private function getLatestVersion($moduleName)
     {
         return $this->extensionReleaseDb->getLatestReleaseForModule($moduleName);
+    }
+
+    private function getIsSecure($moduleName, $installedVersion)
+    {
+        return $this->extensionReleaseDb->getIsSecure($moduleName, $installedVersion);
     }
 
     private function isMagentoModule($moduleName)

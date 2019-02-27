@@ -67,7 +67,14 @@
                 </item>
             </argument>
         </column>
-
+        <column name="is_secure">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Security Updates</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
     </columns>
 </listing>
 
