@@ -22,13 +22,16 @@ class ExtensionReleaseDb extends FrameworkDataCollection
 
     public function loadData($printQuery = false, $logQuery = false)
     {
-        //TODO: this should get updated from an online source
-        $csv = Reader::createFromPath(__DIR__ . '/../data/all-releases.csv', 'r');
-        $csv->setHeaderOffset(0);
-        $records = $csv->getRecords();
-        foreach ($records as $record) {
-            $item = $this->objectFactory->create(['data' => $record]);
-            $this->addItem($item);
+        if (!$this->isLoaded()) {
+            //TODO: this should get updated from an online source
+            $csv = Reader::createFromPath(__DIR__ . '/../data/all-releases.csv', 'r');
+            $csv->setHeaderOffset(0);
+            $records = $csv->getRecords();
+            foreach ($records as $record) {
+                $item = $this->objectFactory->create(['data' => $record]);
+                $this->addItem($item);
+            }
+            $this->_setIsLoaded(true);
         }
     }
 
@@ -48,6 +51,29 @@ class ExtensionReleaseDb extends FrameworkDataCollection
             return $latest;
         }
         //TODO: Link this back to github repo to invite contributions
-        return 'No release data found in DB';
+        return __('No release data found in DB');
+    }
+
+    public function getIsSecure($name, $installedVersion)
+    {
+        $found = false;
+        $missing=[];
+        foreach ($this->getItems() as $item) {
+            if ($item->getData('Extension') === $name) {
+                $found = true;
+                if (version_compare($item->getData('Version'), $installedVersion, '>')
+                    && $item->getData('Security') == 1) {
+                    $missing[] = $item->getData('Version');
+                }
+            }
+        }
+        if (!$found) {
+            return __('No release data found in DB');
+        }
+        if (empty($missing)) {
+            return __('All applied');
+        }
+
+        return __('WARNING missing') . ': ' . implode(',', $missing);
     }
 }
