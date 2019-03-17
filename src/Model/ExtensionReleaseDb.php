@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace Extdn\ExtensionDashboard\Model;
 
 use Exception;
+use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionRelease;
+use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionReleaseFactory;
 use Magento\Framework\Data\Collection as FrameworkDataCollection;
-use Magento\Framework\DataObjectFactory;
 use Magento\Framework\Data\Collection\EntityFactoryInterface;
 use League\Csv\Reader;
 use Magento\Framework\Phrase;
@@ -17,21 +18,21 @@ use Magento\Framework\Phrase;
 class ExtensionReleaseDb extends FrameworkDataCollection
 {
     /**
-     * @var DataObjectFactory
+     * @var ExtensionReleaseFactory
      */
-    private $objectFactory;
+    private $extensionReleaseFactory;
 
     /**
      * ExtensionReleaseDb constructor.
      * @param EntityFactoryInterface $entityFactory
-     * @param DataObjectFactory $objectFactory
+     * @param ExtensionReleaseFactory $extensionReleaseFactory
      */
     public function __construct(
         EntityFactoryInterface $entityFactory,
-        DataObjectFactory $objectFactory
+        ExtensionReleaseFactory $extensionReleaseFactory
     ) {
-        $this->objectFactory = $objectFactory;
         parent::__construct($entityFactory);
+        $this->extensionReleaseFactory = $extensionReleaseFactory;
     }
 
     /**
@@ -47,12 +48,13 @@ class ExtensionReleaseDb extends FrameworkDataCollection
             $csv = Reader::createFromPath(__DIR__ . '/../data/all-releases.csv', 'r');
             $csv->setHeaderOffset(0);
             $records = $csv->getRecords();
-            
+
             foreach ($records as $record) {
-                $item = $this->objectFactory->create(['data' => $record]);
+                $record['module_name'] = $record['extension'];
+                $item = $this->extensionReleaseFactory->create(['data' => $record]);
                 $this->addItem($item);
             }
-            
+
             $this->_setIsLoaded(true);
         }
     }
@@ -65,7 +67,8 @@ class ExtensionReleaseDb extends FrameworkDataCollection
     {
         $latest = false;
         foreach ($this->getItems() as $item) {
-            if ($item->getExtension() === $name) {
+            /** @var ExtensionRelease $item */
+            if ($item->getModuleName() === $name) {
                 if (!$latest) {
                     $latest = $item->getVersion();
                 } elseif (version_compare($item->getVersion(), $latest, '>')) {
@@ -77,6 +80,7 @@ class ExtensionReleaseDb extends FrameworkDataCollection
         if ($latest) {
             return (string)$latest;
         }
+
         //TODO: Link this back to github repo to invite contributions
         return (string)__('No release data found in DB');
     }
@@ -91,10 +95,11 @@ class ExtensionReleaseDb extends FrameworkDataCollection
         $found = false;
         $missing = [];
         foreach ($this->getItems() as $item) {
-            if ($item->getExtension() === $name) {
+            /** @var ExtensionRelease $item */
+            if ($item->getModuleName() === $name) {
                 $found = true;
                 if (version_compare($item->getVersion(), $installedVersion, '>')
-                    && $item->getSecurity() == 1) {
+                    && $item->isSecurityRelease()) {
                     $missing[] = $item->getVersion();
                 }
             }
