@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Extdn\ExtensionDashboard\Controller\Adminhtml\Extensionlist;
 

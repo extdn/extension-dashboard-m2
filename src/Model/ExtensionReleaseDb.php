@@ -1,17 +1,31 @@
 <?php
+declare(strict_types=1);
 
 namespace Extdn\ExtensionDashboard\Model;
 
+use Exception;
 use Magento\Framework\Data\Collection as FrameworkDataCollection;
 use Magento\Framework\DataObjectFactory;
 use Magento\Framework\Data\Collection\EntityFactoryInterface;
 use League\Csv\Reader;
+use Magento\Framework\Phrase;
 
+/**
+ * Class ExtensionReleaseDb
+ * @package Extdn\ExtensionDashboard\Model
+ */
 class ExtensionReleaseDb extends FrameworkDataCollection
 {
-
+    /**
+     * @var DataObjectFactory
+     */
     private $objectFactory;
 
+    /**
+     * ExtensionReleaseDb constructor.
+     * @param EntityFactoryInterface $entityFactory
+     * @param DataObjectFactory $objectFactory
+     */
     public function __construct(
         EntityFactoryInterface $entityFactory,
         DataObjectFactory $objectFactory
@@ -20,6 +34,12 @@ class ExtensionReleaseDb extends FrameworkDataCollection
         parent::__construct($entityFactory);
     }
 
+    /**
+     * @param bool $printQuery
+     * @param bool $logQuery
+     * @return FrameworkDataCollection|void
+     * @throws Exception
+     */
     public function loadData($printQuery = false, $logQuery = false)
     {
         if (!$this->isLoaded()) {
@@ -27,15 +47,21 @@ class ExtensionReleaseDb extends FrameworkDataCollection
             $csv = Reader::createFromPath(__DIR__ . '/../data/all-releases.csv', 'r');
             $csv->setHeaderOffset(0);
             $records = $csv->getRecords();
+            
             foreach ($records as $record) {
                 $item = $this->objectFactory->create(['data' => $record]);
                 $this->addItem($item);
             }
+            
             $this->_setIsLoaded(true);
         }
     }
 
-    public function getLatestReleaseForModule($name)
+    /**
+     * @param string $name
+     * @return bool|Phrase
+     */
+    public function getLatestReleaseForModule(string $name)
     {
         $latest = false;
         foreach ($this->getItems() as $item) {
@@ -47,14 +73,20 @@ class ExtensionReleaseDb extends FrameworkDataCollection
                 }
             }
         }
+
         if ($latest) {
-            return $latest;
+            return (string)$latest;
         }
         //TODO: Link this back to github repo to invite contributions
-        return __('No release data found in DB');
+        return (string)__('No release data found in DB');
     }
 
-    public function getIsSecure($name, $installedVersion)
+    /**
+     * @param string $name
+     * @param string $installedVersion
+     * @return string
+     */
+    public function getIsSecure(string $name, string $installedVersion): string
     {
         $found = false;
         $missing = [];
@@ -67,12 +99,15 @@ class ExtensionReleaseDb extends FrameworkDataCollection
                 }
             }
         }
+
+        // @todo: Either return true or throw an Exception?
         if (!$found) {
-            return __('No release data found in DB');
+            return (string)__('No release data found in DB');
         }
-        //TODO: Make the display a bit nicer, warn with colour
+
+        // @todo: Make the display a bit nicer, warn with colour
         if (empty($missing)) {
-            return __('All applied');
+            return (string)__('All applied');
         }
 
         return __('WARNING missing') . ': ' . implode(',', $missing);
