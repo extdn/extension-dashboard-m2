@@ -5,8 +5,15 @@ namespace Extdn\ExtensionDashboard\Controller\Adminhtml\Extensionlist;
 
 use Magento\Backend\App\Action;
 
+/**
+ * Class Index
+ * @package Extdn\ExtensionDashboard\Controller\Adminhtml\Extensionlist
+ */
 class Index extends Action
 {
+    /**
+     * @return void
+     */
     public function execute()
     {
         $this->_view->loadLayout();
