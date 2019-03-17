@@ -6,6 +6,8 @@ namespace Extdn\ExtensionDashboard\Model;
 use Exception;
 use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionRelease;
 use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionReleaseFactory;
+use Extdn\ExtensionDashboard\ReleaseProvider\CsvReleaseProviderFactory;
+use Extdn\ExtensionDashboard\ReleaseProvider\ReleaseProviderListing;
 use Magento\Framework\Data\Collection as FrameworkDataCollection;
 use Magento\Framework\Data\Collection\EntityFactoryInterface;
 use League\Csv\Reader;
@@ -23,16 +25,31 @@ class ExtensionReleaseDb extends FrameworkDataCollection
     private $extensionReleaseFactory;
 
     /**
+     * @var ReleaseProviderListing
+     */
+    private $releaseProviderListing;
+    /**
+     * @var CsvReleaseProviderFactory
+     */
+    private $csvReleaseProviderFactory;
+
+    /**
      * ExtensionReleaseDb constructor.
      * @param EntityFactoryInterface $entityFactory
      * @param ExtensionReleaseFactory $extensionReleaseFactory
+     * @param ReleaseProviderListing $releaseProviderListing
+     * @param CsvReleaseProviderFactory $csvReleaseProviderFactory
      */
     public function __construct(
         EntityFactoryInterface $entityFactory,
-        ExtensionReleaseFactory $extensionReleaseFactory
+        ExtensionReleaseFactory $extensionReleaseFactory,
+        ReleaseProviderListing $releaseProviderListing,
+        CsvReleaseProviderFactory $csvReleaseProviderFactory
     ) {
         parent::__construct($entityFactory);
         $this->extensionReleaseFactory = $extensionReleaseFactory;
+        $this->releaseProviderListing = $releaseProviderListing;
+        $this->csvReleaseProviderFactory = $csvReleaseProviderFactory;
     }
 
     /**
@@ -44,15 +61,16 @@ class ExtensionReleaseDb extends FrameworkDataCollection
     public function loadData($printQuery = false, $logQuery = false)
     {
         if (!$this->isLoaded()) {
-            //TODO: this should get updated from an online source
-            $csv = Reader::createFromPath(__DIR__ . '/../data/all-releases.csv', 'r');
-            $csv->setHeaderOffset(0);
-            $records = $csv->getRecords();
+            // @todo: Move this to a separate Fooman module with a XML DI type insertion
+            $csvFile = __DIR__ . '/../data/all-releases.csv';
+            $csvReleaseProvider = $this->csvReleaseProviderFactory->create(['csvFile' => $csvFile]);
+            $this->releaseProviderListing->add($csvReleaseProvider);
 
-            foreach ($records as $record) {
-                $record['module_name'] = $record['extension'];
-                $item = $this->extensionReleaseFactory->create(['data' => $record]);
-                $this->addItem($item);
+            $releaseProviders = $this->releaseProviderListing->getList();
+            foreach ($releaseProviders as $releaseProvider) {
+                foreach ($releaseProvider->getExtensionReleases() as $extensionRelease) {
+                    $this->addItem($extensionRelease);
+                }
             }
 
             $this->_setIsLoaded(true);
