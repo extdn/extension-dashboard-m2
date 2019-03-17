@@ -9,4 +9,11 @@
         </arguments>
     </type>
 
+    <type name="Extdn\ExtensionDashboard\ReleaseProvider\ReleaseProviderListing">
+        <arguments>
+            <argument name="releaseProviders" xsi:type="array">
+                <item name="fooman" xsi:type="object">Extdn\ExtensionDashboard\ReleaseProvider\FoomanReleaseProvider</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
