@@ -1,14 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Extdn\ExtensionDashboard\ReleaseProvider;
+namespace Extdn\ExtensionDashboard\ReleaseProvider\ThirdParty;
 
 use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionReleaseFactory;
 use Magento\Framework\Component\ComponentRegistrar;
+use Extdn\ExtensionDashboard\ReleaseProvider\CsvReleaseProvider;
 
 /**
  * Class FoomanReleaseProvider
- * @package Extdn\ExtensionDashboard\ReleaseProvider
+ * @package Extdn\ExtensionDashboard\ReleaseProvider\ThirdParty
  */
 class FoomanReleaseProvider extends CsvReleaseProvider
 {

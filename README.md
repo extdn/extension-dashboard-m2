@@ -25,3 +25,14 @@ bin/magento setup:upgrade
 ```
 
 Next, follow the usual procedure to push changes from the development environment to production (for example with `bin/magento deploy:mode:set production`).
+
+## Extension feeds
+This dashboard is being fed through feeds: Either a CSV-file or a remote resource that allows you to define version-information. Currently, the following is supported:
+
+- Define a new DI VirtualType (see `di.xml`) to use the `ComposerFeedProvider` to load information from Packagist.
+- Use the `CsvFeedProvider` to load information from a local CSV file.
+- Add a custom provider to the listing of providers.
+
+## Todo
+- Move extension feeds to different submodules?
+- Automatically fetch information from Packagist on existing extensions, if available.

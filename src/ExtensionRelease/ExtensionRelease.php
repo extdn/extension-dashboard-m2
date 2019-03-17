@@ -20,10 +20,10 @@ class ExtensionRelease extends DataObject
         // @todo: This does not make sense if we are going to override this anyway
         parent::__construct($data);
 
-        $this->setModuleName((string)$data['extension']);
+        $this->setModuleName((string)$data['module_name']);
         $this->setVersion((string)$data['version']);
         $this->setDate((string)$data['date']);
-        $this->setSecurityRelease((bool)$data['security']);
+        $this->setSecurityRelease((bool)$data['security_release']);
         $this->setContent((string)$data['content']);
     }
 

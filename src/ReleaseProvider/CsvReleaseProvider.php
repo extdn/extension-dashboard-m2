@@ -9,7 +9,7 @@ use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionReleaseFactory;
 use League\Csv\Reader;
 
 /**
- * Class ReleaseProvider
+ * Class CsvReleaseProvider
  * @package Extdn\ExtensionDashboard\ReleaseProvider
  */
 class CsvReleaseProvider implements ReleaseProviderInterface
@@ -49,6 +49,7 @@ class CsvReleaseProvider implements ReleaseProviderInterface
         $items = [];
         foreach ($records as $record) {
             $record['module_name'] = $record['extension'];
+            $record['security_release'] = $record['security'];
             $items[] = $this->extensionReleaseFactory->create(['data' => $record]);
         }
 

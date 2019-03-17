@@ -23,7 +23,6 @@ class ReleaseProviderListing
     public function __construct(
         array $releaseProviders = []
     ) {
-
         $this->releaseProviders = $releaseProviders;
     }
 
