@@ -9,4 +9,24 @@
         </arguments>
     </type>
 
+    <type name="Extdn\ExtensionDashboard\ReleaseProvider\ReleaseProviderListing">
+        <arguments>
+            <argument name="releaseProviders" xsi:type="array">
+                <item name="fooman" xsi:type="object">Extdn\ExtensionDashboard\ReleaseProvider\ThirdParty\FoomanReleaseProvider</item>
+                <item name="yireoCommercial" xsi:type="object">Extdn\ExtensionDashboard\ReleaseProvider\ThirdParty\YireoCommercialReleaseProvider</item>
+                <item name="yireoFree" xsi:type="object">YireoReleaseProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType type="Extdn\ExtensionDashboard\ReleaseProvider\ComposerFeedReleaseProvider" name="YireoReleaseProvider">
+        <arguments>
+            <argument name="urls" xsi:type="array">
+                <item name="Yireo_GoogleTagManager2" xsi:type="string">https://repo.packagist.org/p/yireo/magento2-googletagmanager2.json</item>
+                <item name="Yireo_CheckoutTester2" xsi:type="string">https://repo.packagist.org/p/yireo/magento2-checkouttester2.json</item>
+                <item name="Yireo_CorsHack" xsi:type="string">https://repo.packagist.org/p/yireo/magento2-corshack.json</item>
+                <item name="Yireo_ServerPush" xsi:type="string">https://repo.packagist.org/p/yireo/magento2-serverpush.json</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>

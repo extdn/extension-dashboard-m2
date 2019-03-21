@@ -1,8 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Extdn\ExtensionDashboard\Model;
 
-class ExtensionDocument extends \Magento\Framework\View\Element\UiComponent\DataProvider\Document
-{
+use Magento\Framework\View\Element\UiComponent\DataProvider\Document;
 
+/**
+ * Class ExtensionDocument
+ * @package Extdn\ExtensionDashboard\Model
+ */
+class ExtensionDocument extends Document
+{
 }

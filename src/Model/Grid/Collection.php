@@ -1,31 +1,77 @@
 <?php
+declare(strict_types=1);
 
 namespace Extdn\ExtensionDashboard\Model\Grid;
 
+use Extdn\ExtensionDashboard\Model\ExtensionDocument;
+use Extdn\ExtensionDashboard\Model\ExtensionDocumentFactory;
 use Extdn\ExtensionDashboard\Model\ExtensionReleaseDb;
+use Magento\Framework\Api\Search\DocumentInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Data\Collection as FrameworkDataCollection;
 use Magento\Framework\Data\Collection\EntityFactoryInterface;
+use Magento\Framework\Module\FullModuleList;
+use Magento\Framework\Module\ModuleList;
+use Magento\Framework\Module\PackageInfo;
 
+/**
+ * Class Collection
+ * @package Extdn\ExtensionDashboard\Model\Grid
+ */
 class Collection extends FrameworkDataCollection implements SearchResultInterface
 {
+    /**
+     *
+     */
     const MAGENTO_VENDOR_NAME = 'Magento_';
 
+    /**
+     * @var FullModuleList
+     */
     private $moduleList;
+
+    /**
+     * @var ModuleList
+     */
     private $moduleListActive;
+
+    /**
+     * @var ExtensionDocumentFactory
+     */
     private $extensionDocumentFactory;
+
+    /**
+     * @var PackageInfo
+     */
     private $packageInfo;
+
+    /**
+     * @var ExtensionReleaseDb
+     */
     private $extensionReleaseDb;
 
+    /**
+     * @var DocumentInterface[]
+     */
     private $extensions;
 
+    /**
+     * Collection constructor.
+     *
+     * @param EntityFactoryInterface $entityFactory
+     * @param FullModuleList $moduleList
+     * @param ModuleList $moduleListActive
+     * @param ExtensionDocumentFactory $extensionDocumentFactory
+     * @param PackageInfo $packageInfo
+     * @param ExtensionReleaseDb $extensionReleaseDb
+     */
     public function __construct(
         EntityFactoryInterface $entityFactory,
-        \Magento\Framework\Module\FullModuleList $moduleList,
-        \Magento\Framework\Module\ModuleList $moduleListActive,
-        \Extdn\ExtensionDashboard\Model\ExtensionDocumentFactory $extensionDocumentFactory,
-        \Magento\Framework\Module\PackageInfo $packageInfo,
+        FullModuleList $moduleList,
+        ModuleList $moduleListActive,
+        ExtensionDocumentFactory $extensionDocumentFactory,
+        PackageInfo $packageInfo,
         ExtensionReleaseDb $extensionReleaseDb
     ) {
         parent::__construct($entityFactory);
@@ -37,45 +83,71 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
     }
 
     /**
-     * @return \Magento\Framework\Api\Search\DocumentInterface[]
+     * @return DocumentInterface[]
      */
     public function getItems()
     {
         if (empty($this->extensions)) {
             $allModules = $this->moduleList->getAll();
             foreach ($allModules as $module) {
-                if (!$this->isMagentoModule($module['name'])) {
-                    $packageName = $this->packageInfo->getPackageName($module['name']);
-                    $version = $this->packageInfo->getVersion($module['name']);
-                    $active = $this->moduleListActive->has($module['name']);
-                    $doc = $this->extensionDocumentFactory->create();
-                    $doc->setCustomAttribute('module_name', $module['name']);
-                    $doc->setCustomAttribute('setup_version', $module['setup_version']);
-                    $doc->setCustomAttribute('package_name', $packageName);
-                    $doc->setCustomAttribute('version', $version);
-                    $doc->setCustomAttribute('latest_version', $this->getLatestVersion($module['name']));
-                    $doc->setCustomAttribute('is_secure', $this->getIsSecure($module['name'], $version));
-                    $doc->setCustomAttribute('active', $active ? __('Enabled') : __('Disabled'));
-
-                    $this->extensions[] = $doc;
+                if ($this->isMagentoModule($module['name'])) {
+                    continue;
                 }
+
+                $this->extensions[] = $this->getDocFromModule($module);
             }
         }
 
         return $this->extensions;
     }
 
-    private function getLatestVersion($moduleName)
+    /**
+     * @param array $module
+     * @return ExtensionDocument
+     */
+    private function getDocFromModule(array $module): ExtensionDocument
+    {
+        $packageName = $this->packageInfo->getPackageName($module['name']);
+        $version = $this->packageInfo->getVersion($module['name']);
+        $active = $this->moduleListActive->has($module['name']);
+
+        $doc = $this->extensionDocumentFactory->create();
+        $doc->setCustomAttribute('module_name', $module['name']);
+        $doc->setCustomAttribute('setup_version', $module['setup_version']);
+        $doc->setCustomAttribute('package_name', $packageName);
+        $doc->setCustomAttribute('version', $version);
+        $doc->setCustomAttribute('latest_version', $this->getLatestVersion((string)$module['name']));
+        $doc->setCustomAttribute('is_secure', $this->isSecure($module['name'], $version));
+        $doc->setCustomAttribute('active', $active ? __('Enabled') : __('Disabled'));
+
+        return $doc;
+    }
+
+    /**
+     * @param string $moduleName
+     * @return bool|\Magento\Framework\Phrase
+     */
+    private function getLatestVersion(string $moduleName)
     {
         return $this->extensionReleaseDb->getLatestReleaseForModule($moduleName);
     }
 
-    private function getIsSecure($moduleName, $installedVersion)
+    /**
+     * @param string $moduleName
+     * @param string $installedVersion
+     * @return string
+     */
+    private function isSecure(string $moduleName, string $installedVersion)
     {
+        // @todo: Refactor return value of underlying call
         return $this->extensionReleaseDb->getIsSecure($moduleName, $installedVersion);
     }
 
-    private function isMagentoModule($moduleName)
+    /**
+     * @param string $moduleName
+     * @return bool
+     */
+    private function isMagentoModule(string $moduleName)
     {
         return substr($moduleName, 0, strlen(self::MAGENTO_VENDOR_NAME)) === self::MAGENTO_VENDOR_NAME;
     }
@@ -85,7 +157,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
      *
      * @return int
      */
-    public function getTotalCount()
+    public function getTotalCount(): int
     {
         return count($this->extensions);
     }
@@ -106,7 +178,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
     /**
      * Get search criteria.
      *
-     * @return \Magento\Framework\Api\SearchCriteriaInterface
+     * @return void
      */
     public function getSearchCriteria()
     {
