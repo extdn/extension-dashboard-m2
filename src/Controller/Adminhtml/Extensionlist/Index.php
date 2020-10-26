@@ -11,6 +11,8 @@ use Magento\Backend\App\Action;
  */
 class Index extends Action
 {
+    const ADMIN_RESOURCE = 'Extdn_ExtensionDashboard::list';
+
     /**
      * @return void
      */
