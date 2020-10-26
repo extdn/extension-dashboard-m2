@@ -2,7 +2,7 @@ name: ExtDN M2 Integration Tests
 on: [push, pull_request]
 
 jobs:
-  integration-tests-2.3:
+  integration-tests-2-3:
     name: Magento 2.3 Integration Tests
     runs-on: ubuntu-latest
     services:
@@ -22,7 +22,7 @@ jobs:
           composer_name: extdn/extension-dashboard-m2
           ce_version: '2.3.6'
           magento_pre_install_script: './.github/require-dev-install.sh'
-  integration-tests-2.4:
+  integration-tests-2-4:
     name: Magento 2.4 Integration Tests
     runs-on: ubuntu-latest
     services:
