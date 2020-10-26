@@ -3,6 +3,7 @@
 namespace Extdn\ExtensionDashboard\Controller\Adminhtml;
 
 use Fooman\PhpunitBridge\AbstractBackendController;
+
 /**
  * @magentoAppArea adminhtml
  */
@@ -17,13 +18,13 @@ class ExtensionListTest extends AbstractBackendController
 
     public function testComposerNameSelfDisplays()
     {
-        $this->dispatch($this->uri);
+        $this->dispatch('backend/mui/index/render/?namespace=extdndashboard_extensionlist_grid&isAjax=true');
         self::assertStringContainsString('extdn/extension-dashboard-m2', $this->getResponse()->getBody());
     }
 
     public function testModuleNameSelfDisplays()
     {
-        $this->dispatch($this->uri);
+        $this->dispatch('backend/mui/index/render/?namespace=extdndashboard_extensionlist_grid&isAjax=true');
         self::assertStringContainsString('Extdn_ExtensionDashboard', $this->getResponse()->getBody());
     }
 }
