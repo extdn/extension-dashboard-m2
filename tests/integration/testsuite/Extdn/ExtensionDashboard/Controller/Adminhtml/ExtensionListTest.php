@@ -14,4 +14,16 @@ class ExtensionListTest extends AbstractBackendController
         $this->uri = 'backend/extdndashboard/extensionlist';
         parent::setUp();
     }
+
+    public function testComposerNameSelfDisplays()
+    {
+        $this->dispatch($this->uri);
+        self::assertStringContainsString('extdn/extension-dashboard-m2', $this->getResponse()->getBody());
+    }
+
+    public function testModuleNameSelfDisplays()
+    {
+        $this->dispatch($this->uri);
+        self::assertStringContainsString('extdn/extension-dashboard-m2', $this->getResponse()->getBody());
+    }
 }
