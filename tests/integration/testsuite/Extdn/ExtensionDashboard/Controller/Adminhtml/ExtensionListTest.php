@@ -24,6 +24,6 @@ class ExtensionListTest extends AbstractBackendController
     public function testModuleNameSelfDisplays()
     {
         $this->dispatch($this->uri);
-        self::assertStringContainsString('extdn/extension-dashboard-m2', $this->getResponse()->getBody());
+        self::assertStringContainsString('Extdn_ExtensionDashboard', $this->getResponse()->getBody());
     }
 }
