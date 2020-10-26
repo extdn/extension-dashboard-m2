@@ -13,7 +13,7 @@ jobs:
         ports:
           - 3306:3306
         options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-   steps:
+    steps:
       - uses: actions/checkout@v2
       - name: M2 Integration Tests with Magento 2 (Php7.3)
         uses: extdn/github-actions-m2/magento-integration-tests/7.3@master
