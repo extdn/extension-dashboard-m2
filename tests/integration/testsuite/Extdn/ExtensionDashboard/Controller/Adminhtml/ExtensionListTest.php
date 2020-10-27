@@ -19,7 +19,7 @@ class ExtensionListTest extends AbstractBackendController
     public function testComposerNameSelfDisplays()
     {
         $this->dispatch('backend/mui/index/render/?namespace=extdndashboard_extensionlist_grid&isAjax=true');
-        self::assertStringContainsString('extdn/extension-dashboard-m2', $this->getResponse()->getBody());
+        self::assertStringContainsString('extdn\/extension-dashboard-m2', $this->getResponse()->getBody());
     }
 
     public function testModuleNameSelfDisplays()
