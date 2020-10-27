@@ -5,10 +5,6 @@ namespace Extdn\ExtensionDashboard\Api;
 
 use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionRelease;
 
-/**
- * Class ReleaseProviderInterface
- * @package Extdn\ExtensionDashboard\Api
- */
 interface ReleaseProviderInterface
 {
     /**

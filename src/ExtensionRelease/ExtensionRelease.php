@@ -5,10 +5,6 @@ namespace Extdn\ExtensionDashboard\ExtensionRelease;
 
 use Magento\Framework\DataObject;
 
-/**
- * Class ExtensionRelease
- * @package Extdn\ExtensionDashboard\ExtensionRelease
- */
 class ExtensionRelease extends DataObject
 {
     /**

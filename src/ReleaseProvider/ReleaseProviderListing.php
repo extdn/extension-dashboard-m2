@@ -5,10 +5,6 @@ namespace Extdn\ExtensionDashboard\ReleaseProvider;
 
 use Extdn\ExtensionDashboard\Api\ReleaseProviderInterface;
 
-/**
- * Class ReleaseProviders
- * @package Extdn\ExtensionDashboard\ReleaseProvider
- */
 class ReleaseProviderListing
 {
     /**

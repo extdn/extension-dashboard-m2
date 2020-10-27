@@ -8,10 +8,6 @@ use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionRelease;
 use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionReleaseFactory;
 use League\Csv\Reader;
 
-/**
- * Class CsvReleaseProvider
- * @package Extdn\ExtensionDashboard\ReleaseProvider
- */
 class CsvReleaseProvider implements ReleaseProviderInterface
 {
     /**

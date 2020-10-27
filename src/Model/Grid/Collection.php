@@ -15,15 +15,9 @@ use Magento\Framework\Module\FullModuleList;
 use Magento\Framework\Module\ModuleList;
 use Magento\Framework\Module\PackageInfo;
 
-/**
- * Class Collection
- * @package Extdn\ExtensionDashboard\Model\Grid
- */
 class Collection extends FrameworkDataCollection implements SearchResultInterface
 {
-    /**
-     *
-     */
+
     const MAGENTO_VENDOR_NAME = 'Magento_';
 
     /**

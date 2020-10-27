@@ -5,10 +5,6 @@ namespace Extdn\ExtensionDashboard\Controller\Adminhtml\Extensionlist;
 
 use Magento\Backend\App\Action;
 
-/**
- * Class Index
- * @package Extdn\ExtensionDashboard\Controller\Adminhtml\Extensionlist
- */
 class Index extends Action
 {
     const ADMIN_RESOURCE = 'Extdn_ExtensionDashboard::list';
