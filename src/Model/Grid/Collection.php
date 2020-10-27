@@ -176,6 +176,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
      */
     public function getSearchCriteria()
     {
+        //phpcs:ignore Magento2.CodeAnalysis.EmptyBlock.DetectedFunction -- currently not used
         // TODO: Implement getSearchCriteria() method.
     }
 
@@ -210,6 +211,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
      */
     public function getAggregations()
     {
+        //phpcs:ignore Magento2.CodeAnalysis.EmptyBlock.DetectedFunction -- currently not used
         // TODO: Implement getAggregations() method.
     }
 
