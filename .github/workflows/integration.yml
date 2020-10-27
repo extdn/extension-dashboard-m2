@@ -2,26 +2,6 @@ name: ExtDN M2 Integration Tests
 on: [push, pull_request]
 
 jobs:
-    integration-tests-2-3-low:
-      name: Magento 2.3.3 Integration Tests
-      runs-on: ubuntu-latest
-      services:
-        mysql:
-          image: mysql:5.7
-          env:
-            MYSQL_ROOT_PASSWORD: root
-          ports:
-            - 3306:3306
-          options: --tmpfs /tmp:rw --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      steps:
-        - uses: actions/checkout@v2
-        - name: M2 Integration Tests with Magento 2 (Php7.2)
-          uses: extdn/github-actions-m2/magento-integration-tests/7.2@master
-          with:
-            module_name: Extdn_ExtensionDashboard
-            composer_name: extdn/extension-dashboard-m2
-            ce_version: '2.3.3'
-            magento_pre_install_script: './.github/require-dev-install.sh'
     integration-tests-2-3-mid:
       name: Magento 2.3.4 Integration Tests
       runs-on: ubuntu-latest
