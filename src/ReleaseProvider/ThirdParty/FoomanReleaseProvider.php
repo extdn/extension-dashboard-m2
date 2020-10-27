@@ -7,10 +7,6 @@ use Extdn\ExtensionDashboard\ExtensionRelease\ExtensionReleaseFactory;
 use Magento\Framework\Component\ComponentRegistrar;
 use Extdn\ExtensionDashboard\ReleaseProvider\CsvReleaseProvider;
 
-/**
- * Class FoomanReleaseProvider
- * @package Extdn\ExtensionDashboard\ReleaseProvider\ThirdParty
- */
 class FoomanReleaseProvider extends CsvReleaseProvider
 {
     /**

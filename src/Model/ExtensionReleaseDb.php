@@ -11,10 +11,6 @@ use Magento\Framework\Data\Collection as FrameworkDataCollection;
 use Magento\Framework\Data\Collection\EntityFactoryInterface;
 use Magento\Framework\Phrase;
 
-/**
- * Class ExtensionReleaseDb
- * @package Extdn\ExtensionDashboard\Model
- */
 class ExtensionReleaseDb extends FrameworkDataCollection
 {
     /**

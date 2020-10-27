@@ -15,15 +15,9 @@ use Magento\Framework\Module\FullModuleList;
 use Magento\Framework\Module\ModuleList;
 use Magento\Framework\Module\PackageInfo;
 
-/**
- * Class Collection
- * @package Extdn\ExtensionDashboard\Model\Grid
- */
 class Collection extends FrameworkDataCollection implements SearchResultInterface
 {
-    /**
-     *
-     */
+
     const MAGENTO_VENDOR_NAME = 'Magento_';
 
     /**
@@ -180,6 +174,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
      *
      * @return void
      */
+    // phpcs:ignore Magento2.CodeAnalysis.EmptyBlock.DetectedFunction -- currently not used
     public function getSearchCriteria()
     {
         // TODO: Implement getSearchCriteria() method.
@@ -214,6 +209,7 @@ class Collection extends FrameworkDataCollection implements SearchResultInterfac
     /**
      * @return \Magento\Framework\Api\Search\AggregationInterface
      */
+    // phpcs:ignore Magento2.CodeAnalysis.EmptyBlock.DetectedFunction -- currently not used
     public function getAggregations()
     {
         // TODO: Implement getAggregations() method.
