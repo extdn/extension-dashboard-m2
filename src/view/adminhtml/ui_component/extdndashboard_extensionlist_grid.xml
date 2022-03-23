@@ -9,7 +9,7 @@
     </argument>
     <dataSource name="extdndashboard_extensionlist_grid_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+            <argument name="class" xsi:type="string">Extdn\ExtensionDashboard\VirtualType\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">extdndashboard_extensionlist_grid_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">module_name</argument>
             <argument name="requestFieldName" xsi:type="string">module_name</argument>

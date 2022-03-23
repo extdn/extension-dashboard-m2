@@ -9,6 +9,18 @@
         </arguments>
     </type>
 
+    <virtualType name="Extdn\ExtensionDashboard\VirtualType\View\Element\UiComponent\DataProvider\DataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="reporting" xsi:type="object">Extdn\ExtensionDashboard\VirtualType\View\Element\UiComponent\DataProvider\Reporting</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Extdn\ExtensionDashboard\VirtualType\View\Element\UiComponent\DataProvider\Reporting" type="Magento\Framework\View\Element\UiComponent\DataProvider\Reporting">
+        <arguments>
+            <argument name="filterPool" xsi:type="object">Extdn\ExtensionDashboard\Model\Grid\EmptyFilterPool</argument>
+        </arguments>
+    </virtualType>
+
     <type name="Extdn\ExtensionDashboard\ReleaseProvider\ReleaseProviderListing">
         <arguments>
             <argument name="releaseProviders" xsi:type="array">

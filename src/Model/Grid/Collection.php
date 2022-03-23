@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Extdn\ExtensionDashboard\Model\Grid;
 
@@ -17,7 +16,6 @@ use Magento\Framework\Module\PackageInfo;
 
 class Collection extends FrameworkDataCollection implements SearchResultInterface
 {
-
     const MAGENTO_VENDOR_NAME = 'Magento_';
 
     /**
